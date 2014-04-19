@@ -24,8 +24,8 @@ Clip images to an S3 bucket.
       getImageBlob imageUrl, (blob) ->
         SHA1 blob, (sha) ->
           console.log "fetching s3 upload policy"
-          chrome.storage.sync.get (policyData) ->
-            uploader = S3.uploader(policyData)
+          chrome.storage.sync.get "S3_POLICY", ({S3_POLICY}) ->
+            uploader = S3.uploader(S3_POLICY)
             key = "uploads/#{sha}"
             console.log "uploading #{key} to S3"
             uploader.upload
@@ -45,4 +45,5 @@ Clip images to an S3 bucket.
       xhr.send()
 
     global.setPolicy = (policyData) ->
-      chrome.storage.sync.set policyData
+      chrome.storage.sync.set
+        S3_POLICY: policyData
