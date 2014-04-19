@@ -1,1 +1,1 @@
-{"author":"STRd6","name":"S3 Clip","description":"Clip images to S3","version":"0.1.0","width":480,"height":320,"entryPoint":"main","permissions":["<all_urls>"],"app":{"background":{"scripts":["background.js"]}}}
+{"author":"STRd6","name":"S3 Clip","description":"Clip images to S3","version":"0.1.0","width":480,"height":320,"entryPoint":"main","app":{"background":{"scripts":["app.js"]}},"permissions":["<all_urls>"]}
