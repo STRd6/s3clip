@@ -26,9 +26,10 @@ Clip images to an S3 bucket.
           console.log "fetching s3 upload policy"
           chrome.storage.sync.get (policyData) ->
             uploader = S3.uploader(policyData)
-            console.log "uploading #{imageUrl} to S3"
+            key = "uploads/#{sha}"
+            console.log "uploading #{key} to S3"
             uploader.upload
-              key: "uploads/#{imageUrl}"
+              key: key
               blob: blob
       , (error) ->
         console.error error
