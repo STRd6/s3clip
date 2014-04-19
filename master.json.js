@@ -14,24 +14,26 @@ window["STRd6/s3clip:master"]({
     },
     "main.coffee.md": {
       "path": "main.coffee.md",
-      "content": "S3 Clip\n=======\n\nClip images to an S3 bucket.\n\n    chrome.contextMenus.create \n      title: \"Send to S3\"\n      contexts:[\"image\"]\n      onclick: (info) ->\n        console.log info\n        alert \"yolo\"\n",
-      "mode": "100644"
+      "content": "S3 Clip\n=======\n\nClip images to an S3 bucket.\n\n    console.log \"Running\"\n\n    chrome.runtime.onInstalled.addListener ->\n\n      chrome.contextMenus.create\n        id: \"send\"\n        title: \"Send to S3\"\n        contexts: [\"image\"]\n      , ->\n        if error = chrome.runtime.lastError\n          console.error error\n        else\n          console.log \"Created!\"\n\n      chrome.contextMenus.onClicked.addListener (data) ->\n        console.log data\n",
+      "mode": "100644",
+      "type": "blob"
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "author: \"STRd6\"\nname: \"S3 Clip\"\ndescription: \"Clip images to S3\"\nversion: \"0.1.0\"\nwidth: 480\nheight: 320\nentryPoint: \"main\"\npermissions: [\n  \"<all_urls>\"\n]\n",
-      "mode": "100644"
+      "content": "author: \"STRd6\"\nname: \"S3 Clip\"\ndescription: \"Clip images to S3\"\nversion: \"0.1.0\"\nmanifest_version: 2\napp:\n  background:\n    scripts: [\"app.js\"] # This is a special hack to make the main entry point be a background app\npermissions: [\n  \"<all_urls>\"\n  \"contextMenus\"\n]\n",
+      "mode": "100644",
+      "type": "blob"
     }
   },
   "distribution": {
     "main": {
       "path": "main",
-      "content": "(function() {\n  chrome.contextMenus.create({\n    title: \"Send to S3\",\n    contexts: [\"image\"],\n    onclick: function(info) {\n      console.log(info);\n      return alert(\"yolo\");\n    }\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  console.log(\"Running\");\n\n  chrome.runtime.onInstalled.addListener(function() {\n    chrome.contextMenus.create({\n      id: \"send\",\n      title: \"Send to S3\",\n      contexts: [\"image\"]\n    }, function() {\n      var error;\n      if (error = chrome.runtime.lastError) {\n        return console.error(error);\n      } else {\n        return console.log(\"Created!\");\n      }\n    });\n    return chrome.contextMenus.onClicked.addListener(function(data) {\n      return console.log(data);\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"author\":\"STRd6\",\"name\":\"S3 Clip\",\"description\":\"Clip images to S3\",\"version\":\"0.1.0\",\"width\":480,\"height\":320,\"entryPoint\":\"main\",\"permissions\":[\"<all_urls>\"]};",
+      "content": "module.exports = {\"author\":\"STRd6\",\"name\":\"S3 Clip\",\"description\":\"Clip images to S3\",\"version\":\"0.1.0\",\"manifest_version\":2,\"app\":{\"background\":{\"scripts\":[\"app.js\"]}},\"permissions\":[\"<all_urls>\",\"contextMenus\"]};",
       "type": "blob"
     }
   },
