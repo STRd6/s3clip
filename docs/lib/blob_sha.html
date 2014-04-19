@@ -37,7 +37,7 @@
             <div class="content"><pre><code class="lang-coffeescript">{SHA1} = require <span class="string">"sha1"</span>
 
 module.<span class="function"><span class="title">exports</span></span> = (blob, fn) -&gt;
-  blobTypedArray blob (arrayBuffer) -&gt;
+  blobTypedArray blob, (arrayBuffer) -&gt;
     fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString())
 
 <span class="function"><span class="title">blobTypedArray</span></span> = (blob, fn) -&gt;
