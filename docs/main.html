@@ -37,20 +37,42 @@
             </div>
             <div class="content"><pre><code class="lang-coffeescript">console.log <span class="string">"Running"</span>
 
-chrome.runtime.onInstalled.addListener -&gt;
+S3 = require <span class="string">"s3"</span>
 
-  chrome.contextMenus.create
-    id: <span class="string">"send"</span>
-    title: <span class="string">"Send to S3"</span>
-    contexts: [<span class="string">"image"</span>]
-  , -&gt;
-    <span class="keyword">if</span> error = chrome.runtime.lastError
-      console.error error
-    <span class="keyword">else</span>
-      console.log <span class="string">"Created!"</span>
+chrome.contextMenus.create
+  title: <span class="string">"Send to S3"</span>
+  contexts: [<span class="string">"image"</span>]
+  onclick: ({srcUrl}) -&gt;
+    console.log arguments
+    alert <span class="string">"yolo"</span>
+, -&gt;
+  <span class="keyword">if</span> error = chrome.runtime.lastError
+    console.error error
+  <span class="keyword">else</span>
+    console.log <span class="string">"Created!"</span>
 
-  chrome.contextMenus.onClicked.addListener (data) -&gt;
-    console.log data</code></pre>
+<span class="function"><span class="title">uploadToS3</span></span> = (imageUrl) -&gt;
+  getImageBlob imageUrl, (blob) -&gt;
+    chrome.storage.sync.get (policyData) -&gt;
+      uploader = S3.uploader(policyData)
+      uploader.upload
+        key: <span class="string">"uploads/<span class="subst">#{imageUrl}</span>"</span>
+        blob: blob
+  , (error) -&gt;
+    console.error error
+
+<span class="function"><span class="title">getImageBlob</span></span> = (url, success, error) -&gt;
+  xhr = <span class="keyword">new</span> XMLHttpRequest()
+  xhr.open(<span class="string">'GET'</span>, url)
+  xhr.responseType = <span class="string">'blob'</span>
+  xhr.<span class="function"><span class="title">onload</span></span> = (e) -&gt;
+    success <span class="property">@response</span>
+  xhr.onerror = error
+
+  xhr.send()
+
+global.<span class="function"><span class="title">setPolicy</span></span> = (policyData) -&gt;
+  chrome.storage.sync.set policyData</code></pre>
 </div>
         </li>
         
