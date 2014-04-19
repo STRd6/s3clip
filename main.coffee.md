@@ -11,8 +11,7 @@ Clip images to an S3 bucket.
       title: "Send to S3"
       contexts: ["image"]
       onclick: ({srcUrl}) ->
-        console.log arguments
-        alert "yolo"
+        uploadToS3(srcUrl)
     , ->
       if error = chrome.runtime.lastError
         console.error error
@@ -20,9 +19,12 @@ Clip images to an S3 bucket.
         console.log "Created!"
 
     uploadToS3 = (imageUrl) ->
+      console.log "getting image data for #{imageUrl}"
       getImageBlob imageUrl, (blob) ->
+        console.log "fetching s3 upload policy"
         chrome.storage.sync.get (policyData) ->
           uploader = S3.uploader(policyData)
+          console.log "uploading #{imageUrl} to S3"
           uploader.upload
             key: "uploads/#{imageUrl}"
             blob: blob
