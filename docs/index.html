@@ -56,8 +56,8 @@ chrome.contextMenus.create
   getImageBlob imageUrl, (blob) -&gt;
     SHA1 blob, (sha) -&gt;
       console.log <span class="string">"fetching s3 upload policy"</span>
-      chrome.storage.sync.get (policyData) -&gt;
-        uploader = S3.uploader(policyData)
+      chrome.storage.sync.get <span class="string">"S3_POLICY"</span>, ({S3_POLICY}) -&gt;
+        uploader = S3.uploader(S3_POLICY)
         key = <span class="string">"uploads/<span class="subst">#{sha}</span>"</span>
         console.log <span class="string">"uploading <span class="subst">#{key}</span> to S3"</span>
         uploader.upload
@@ -77,7 +77,8 @@ chrome.contextMenus.create
   xhr.send()
 
 global.<span class="function"><span class="title">setPolicy</span></span> = (policyData) -&gt;
-  chrome.storage.sync.set policyData</code></pre>
+  chrome.storage.sync.set
+    S3_POLICY: policyData</code></pre>
 </div>
         </li>
         
