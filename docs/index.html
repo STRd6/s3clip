@@ -43,8 +43,7 @@ chrome.contextMenus.create
   title: <span class="string">"Send to S3"</span>
   contexts: [<span class="string">"image"</span>]
   onclick: ({srcUrl}) -&gt;
-    console.log arguments
-    alert <span class="string">"yolo"</span>
+    uploadToS3(srcUrl)
 , -&gt;
   <span class="keyword">if</span> error = chrome.runtime.lastError
     console.error error
@@ -52,9 +51,12 @@ chrome.contextMenus.create
     console.log <span class="string">"Created!"</span>
 
 <span class="function"><span class="title">uploadToS3</span></span> = (imageUrl) -&gt;
+  console.log <span class="string">"getting image data for <span class="subst">#{imageUrl}</span>"</span>
   getImageBlob imageUrl, (blob) -&gt;
+    console.log <span class="string">"fetching s3 upload policy"</span>
     chrome.storage.sync.get (policyData) -&gt;
       uploader = S3.uploader(policyData)
+      console.log <span class="string">"uploading <span class="subst">#{imageUrl}</span> to S3"</span>
       uploader.upload
         key: <span class="string">"uploads/<span class="subst">#{imageUrl}</span>"</span>
         blob: blob
