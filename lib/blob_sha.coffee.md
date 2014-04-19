@@ -1,7 +1,7 @@
 Get the SHA1 hash of a blob
 ===========================
 
-    {SHA1} = require "sha1"
+    {SHA1} = CryptoJS = require "sha1"
 
     module.exports = (blob, fn) ->
       blobTypedArray blob, (arrayBuffer) ->
