@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>main</title>
+  <title>lib/blob_sha</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="http://strd6.github.io/cdn/parallel/docco.css" />
@@ -18,7 +18,7 @@
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <h1 id="s3-clip">S3 Clip</h1>
+              <h1 id="get-the-sha1-hash-of-a-blob">Get the SHA1 hash of a blob</h1>
 
             </div>
             <div class="content"><pre><code class="lang-coffeescript">
@@ -32,51 +32,21 @@
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Clip images to an S3 bucket.</p>
-
+              
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">console.log <span class="string">"Running"</span>
+            <div class="content"><pre><code class="lang-coffeescript">{SHA1} = require <span class="string">"sha1"</span>
 
-S3 = require <span class="string">"s3"</span>
-SHA1 = require <span class="string">"./lib/blob_sha"</span>
+module.<span class="function"><span class="title">exports</span></span> = (blob, fn) -&gt;
+  blobTypedArray blob (arrayBuffer) -&gt;
+    fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString())
 
-chrome.contextMenus.create
-  title: <span class="string">"Send to S3"</span>
-  contexts: [<span class="string">"image"</span>]
-  onclick: ({srcUrl}) -&gt;
-    uploadToS3(srcUrl)
-, -&gt;
-  <span class="keyword">if</span> error = chrome.runtime.lastError
-    console.error error
-  <span class="keyword">else</span>
-    console.log <span class="string">"Created!"</span>
+<span class="function"><span class="title">blobTypedArray</span></span> = (blob, fn) -&gt;
+  reader = <span class="keyword">new</span> FileReader()
 
-<span class="function"><span class="title">uploadToS3</span></span> = (imageUrl) -&gt;
-  console.log <span class="string">"getting image data for <span class="subst">#{imageUrl}</span>"</span>
-  getImageBlob imageUrl, (blob) -&gt;
-    SHA1 blob, (sha) -&gt;
-      console.log <span class="string">"fetching s3 upload policy"</span>
-      chrome.storage.sync.get (policyData) -&gt;
-        uploader = S3.uploader(policyData)
-        console.log <span class="string">"uploading <span class="subst">#{imageUrl}</span> to S3"</span>
-        uploader.upload
-          key: <span class="string">"uploads/<span class="subst">#{imageUrl}</span>"</span>
-          blob: blob
-  , (error) -&gt;
-    console.error error
+  reader.<span class="function"><span class="title">onloadend</span></span> = -&gt;
+    fn(reader.result)
 
-<span class="function"><span class="title">getImageBlob</span></span> = (url, success, error) -&gt;
-  xhr = <span class="keyword">new</span> XMLHttpRequest()
-  xhr.open(<span class="string">'GET'</span>, url)
-  xhr.responseType = <span class="string">'blob'</span>
-  xhr.<span class="function"><span class="title">onload</span></span> = (e) -&gt;
-    success <span class="property">@response</span>
-  xhr.onerror = error
-
-  xhr.send()
-
-global.<span class="function"><span class="title">setPolicy</span></span> = (policyData) -&gt;
-  chrome.storage.sync.set policyData</code></pre>
+  reader.readAsArrayBuffer(blob)</code></pre>
 </div>
         </li>
         
@@ -217,6 +187,6 @@ global.<span class="function"><span class="title">setPolicy</span></span> = (pol
 
 }).call(this);
 
-</script><script src="package.js"></script>
+</script><script src="../package.js"></script>
 </body>
 </html>

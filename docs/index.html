@@ -38,6 +38,7 @@
             <div class="content"><pre><code class="lang-coffeescript">console.log <span class="string">"Running"</span>
 
 S3 = require <span class="string">"s3"</span>
+SHA1 = require <span class="string">"./lib/blob_sha"</span>
 
 chrome.contextMenus.create
   title: <span class="string">"Send to S3"</span>
@@ -53,13 +54,14 @@ chrome.contextMenus.create
 <span class="function"><span class="title">uploadToS3</span></span> = (imageUrl) -&gt;
   console.log <span class="string">"getting image data for <span class="subst">#{imageUrl}</span>"</span>
   getImageBlob imageUrl, (blob) -&gt;
-    console.log <span class="string">"fetching s3 upload policy"</span>
-    chrome.storage.sync.get (policyData) -&gt;
-      uploader = S3.uploader(policyData)
-      console.log <span class="string">"uploading <span class="subst">#{imageUrl}</span> to S3"</span>
-      uploader.upload
-        key: <span class="string">"uploads/<span class="subst">#{imageUrl}</span>"</span>
-        blob: blob
+    SHA1 blob, (sha) -&gt;
+      console.log <span class="string">"fetching s3 upload policy"</span>
+      chrome.storage.sync.get (policyData) -&gt;
+        uploader = S3.uploader(policyData)
+        console.log <span class="string">"uploading <span class="subst">#{imageUrl}</span> to S3"</span>
+        uploader.upload
+          key: <span class="string">"uploads/<span class="subst">#{imageUrl}</span>"</span>
+          blob: blob
   , (error) -&gt;
     console.error error
 
