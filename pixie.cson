@@ -4,6 +4,7 @@ description: "Clip images to S3"
 version: "0.1.0"
 dependencies:
   s3: "distri/s3:v0.1.0"
+  sha1: "distri/sha1:v0.1.0"
 manifest_version: 2
 background:
   scripts: ["app.js"] # This is a special hack to make the main entry point be a background app
