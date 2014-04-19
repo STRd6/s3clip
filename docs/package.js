@@ -192,7 +192,7 @@
     },
     "lib/blob_sha.coffee.md": {
       "path": "lib/blob_sha.coffee.md",
-      "content": "Get the SHA1 hash of a blob\n===========================\n\n    {SHA1} = require \"sha1\"\n\n    module.exports = (blob, fn) ->\n      blobTypedArray blob, (arrayBuffer) ->\n        fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString())\n\n    blobTypedArray = (blob, fn) ->\n      reader = new FileReader()\n\n      reader.onloadend = ->\n        fn(reader.result)\n\n      reader.readAsArrayBuffer(blob)\n",
+      "content": "Get the SHA1 hash of a blob\n===========================\n\n    {SHA1} = CryptoJS = require \"sha1\"\n\n    module.exports = (blob, fn) ->\n      blobTypedArray blob, (arrayBuffer) ->\n        fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString())\n\n    blobTypedArray = (blob, fn) ->\n      reader = new FileReader()\n\n      reader.onloadend = ->\n        fn(reader.result)\n\n      reader.readAsArrayBuffer(blob)\n",
       "mode": "100644"
     }
   },
@@ -209,7 +209,7 @@
     },
     "lib/blob_sha": {
       "path": "lib/blob_sha",
-      "content": "(function() {\n  var SHA1, blobTypedArray;\n\n  SHA1 = require(\"sha1\").SHA1;\n\n  module.exports = function(blob, fn) {\n    return blobTypedArray(blob, function(arrayBuffer) {\n      return fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString());\n    });\n  };\n\n  blobTypedArray = function(blob, fn) {\n    var reader;\n    reader = new FileReader();\n    reader.onloadend = function() {\n      return fn(reader.result);\n    };\n    return reader.readAsArrayBuffer(blob);\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  var CryptoJS, SHA1, blobTypedArray;\n\n  SHA1 = (CryptoJS = require(\"sha1\")).SHA1;\n\n  module.exports = function(blob, fn) {\n    return blobTypedArray(blob, function(arrayBuffer) {\n      return fn(SHA1(CryptoJS.lib.WordArray.create(arrayBuffer)).toString());\n    });\n  };\n\n  blobTypedArray = function(blob, fn) {\n    var reader;\n    reader = new FileReader();\n    reader.onloadend = function() {\n      return fn(reader.result);\n    };\n    return reader.readAsArrayBuffer(blob);\n  };\n\n}).call(this);\n",
       "type": "blob"
     }
   },
