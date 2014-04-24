@@ -5,8 +5,7 @@ Clip images to an S3 bucket.
 
     console.log "Running"
 
-    S3 = require "s3"
-    SHA1 = require "./lib/blob_sha"
+    S3Trinket = require "s3-trinket"
 
     chrome.contextMenus.create
       title: "Send to S3"
@@ -22,15 +21,12 @@ Clip images to an S3 bucket.
     uploadToS3 = (imageUrl) ->
       console.log "getting image data for #{imageUrl}"
       getImageBlob imageUrl, (blob) ->
-        SHA1 blob, (sha) ->
           console.log "fetching s3 upload policy"
           chrome.storage.sync.get "S3_POLICY", ({S3_POLICY}) ->
-            uploader = S3.uploader(S3_POLICY)
-            key = "uploads/#{sha}"
-            console.log "uploading #{key} to S3"
-            uploader.upload
-              key: key
-              blob: blob
+            trinket = S3Trinket(S3_POLICY)
+
+            console.log "uploading to S3"
+            trinket.post blob
       , (error) ->
         console.error error
 
