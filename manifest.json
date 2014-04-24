@@ -1,1 +1,1 @@
-{"author":"STRd6","name":"S3 Clip","description":"Clip images to S3","version":"0.1.0","dependencies":{"s3-trinket":"distri/s3-trinket:v0.1.1"},"manifest_version":2,"background":{"scripts":["app.js"]},"permissions":["<all_urls>","contextMenus","storage"]}
+{"author":"STRd6","name":"S3 Clip","description":"Clip images to S3","version":"0.1.0","dependencies":{"jquery":"distri/jQuery:v1.11.0","s3-trinket":"distri/s3-trinket:v0.1.1"},"manifest_version":2,"background":{"scripts":["app.js"]},"permissions":["<all_urls>","contextMenus","storage"]}
