@@ -5,7 +5,9 @@ Clip images to an S3 bucket.
 
     console.log "Running"
 
-    global.$ = require "jquery"
+    require "jquery"
+    global.$ = jQuery
+
     S3Trinket = require "s3-trinket"
 
     chrome.contextMenus.create
