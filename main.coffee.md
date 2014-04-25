@@ -11,7 +11,7 @@ Clip images to an S3 bucket.
     S3Trinket = require "s3-trinket"
 
     notificationFrame = document.createElement "iframe"
-    notificationtFrame.src = "http://distri.github.io/sifter/"
+    notificationFrame.src = "http://distri.github.io/sifter/"
     document.body.appendChild notificationFrame
 
     chrome.contextMenus.create
