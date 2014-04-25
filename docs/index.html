@@ -67,7 +67,7 @@ chrome.contextMenus.create
       console.log <span class="string">"uploading to S3"</span>
       trinket.post(blob).<span class="keyword">then</span> (key) -&gt;
         <span class="comment"># TODO: Ping item manager with key</span>
-        notificationtFrame.postMessage
+        notificationFrame.postMessage
           key: key
         , <span class="string">"*"</span>
 
