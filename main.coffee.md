@@ -35,7 +35,7 @@ Clip images to an S3 bucket.
           console.log "uploading to S3"
           trinket.post(blob).then (key) ->
             # TODO: Ping item manager with key
-            notificationFrame.postMessage
+            notificationFrame.contentWindow.postMessage
               key: key
             , "*"
 
