@@ -10,6 +10,10 @@ Clip images to an S3 bucket.
 
     S3Trinket = require "s3-trinket"
 
+    notificationFrame = document.createElement "iframe"
+    notificationtFrame.src = "http://distri.github.io/sifter/"
+    document.body.appendChild notificationFrame
+
     chrome.contextMenus.create
       title: "Send to S3"
       contexts: ["image"]
@@ -24,12 +28,17 @@ Clip images to an S3 bucket.
     uploadToS3 = (imageUrl) ->
       console.log "getting image data for #{imageUrl}"
       getImageBlob imageUrl, (blob) ->
-          console.log "fetching s3 upload policy"
-          chrome.storage.sync.get "S3_POLICY", ({S3_POLICY}) ->
-            trinket = S3Trinket(S3_POLICY)
+        console.log "fetching s3 upload policy"
+        chrome.storage.sync.get "S3_POLICY", ({S3_POLICY}) ->
+          trinket = S3Trinket(S3_POLICY)
 
-            console.log "uploading to S3"
-            trinket.post blob
+          console.log "uploading to S3"
+          trinket.post(blob).then (key) ->
+            # TODO: Ping item manager with key
+            notificationtFrame.postMessage
+              key: key
+            , "*"
+
       , (error) ->
         console.error error
 
@@ -46,3 +55,8 @@ Clip images to an S3 bucket.
     global.setPolicy = (policyData) ->
       chrome.storage.sync.set
         S3_POLICY: policyData
+
+    addEventListener "message", (event) ->
+      {data, origin, source} = event
+
+      console.log event
