@@ -42,6 +42,10 @@ global.$ = jQuery
 
 S3Trinket = require <span class="string">"s3-trinket"</span>
 
+notificationFrame = document.createElement <span class="string">"iframe"</span>
+notificationtFrame.src = <span class="string">"http://distri.github.io/sifter/"</span>
+document.body.appendChild notificationFrame
+
 chrome.contextMenus.create
   title: <span class="string">"Send to S3"</span>
   contexts: [<span class="string">"image"</span>]
@@ -56,12 +60,17 @@ chrome.contextMenus.create
 <span class="function"><span class="title">uploadToS3</span></span> = (imageUrl) -&gt;
   console.log <span class="string">"getting image data for <span class="subst">#{imageUrl}</span>"</span>
   getImageBlob imageUrl, (blob) -&gt;
-      console.log <span class="string">"fetching s3 upload policy"</span>
-      chrome.storage.sync.get <span class="string">"S3_POLICY"</span>, ({S3_POLICY}) -&gt;
-        trinket = S3Trinket(S3_POLICY)
+    console.log <span class="string">"fetching s3 upload policy"</span>
+    chrome.storage.sync.get <span class="string">"S3_POLICY"</span>, ({S3_POLICY}) -&gt;
+      trinket = S3Trinket(S3_POLICY)
 
-        console.log <span class="string">"uploading to S3"</span>
-        trinket.post blob
+      console.log <span class="string">"uploading to S3"</span>
+      trinket.post(blob).<span class="keyword">then</span> (key) -&gt;
+        <span class="comment"># TODO: Ping item manager with key</span>
+        notificationtFrame.postMessage
+          key: key
+        , <span class="string">"*"</span>
+
   , (error) -&gt;
     console.error error
 
@@ -77,7 +86,12 @@ chrome.contextMenus.create
 
 global.<span class="function"><span class="title">setPolicy</span></span> = (policyData) -&gt;
   chrome.storage.sync.set
-    S3_POLICY: policyData</code></pre>
+    S3_POLICY: policyData
+
+addEventListener <span class="string">"message"</span>, (event) -&gt;
+  {data, origin, source} = event
+
+  console.log event</code></pre>
 </div>
         </li>
         
